@@ -1,0 +1,33 @@
+$primary-color: #111;
+$secondary-color: #19375f;
+$primary-acent-color: #a89880;
+$secondary-acent-color: #3586ab;
+
+/* RGB */
+$picton-blue: rgba(48, 188, 237, 1);
+$jet: rgba(48, 48, 54, 1);
+$royal-blue: rgba(10, 36, 99, 1);
+$dark-gunmetal: rgba(32, 32, 48, 1);
+$arsenic: rgba(57, 48, 74, 1);
+
+$dim-gray: rgb(122, 122, 128);
+$light-gray: rgba(245, 245, 245, 1);
+
+$text-color: $dim-gray;
+
+$success-color: #008000;
+$failure-color: #a30000;
+$neutral-color: $secondary-acent-color;
+
+
+// Toolbar
+$toolbar-bg: $primary-color;
+$toolbar-icon-color: lighten($secondary-color,20);
+$toolbar-icon-hover: darken($toolbar-icon-color, 10);
+$toolbar-icon-active: blue;
+
+
+
+// Responsive variables:
+$break-small: 480px;
+$break-large: 1200px;

@@ -1,0 +1,62 @@
+@import '../../theme.scss';
+
+
+.toolbarContainer{
+  display: inline-flex;
+  width: 100%;
+  text-align: left;
+  user-select: none;
+  background-color: $toolbar-bg !important;
+
+  .titleContainer {
+    display: inherit;
+    margin-left: 8rem;
+    margin-right: 8rem;
+
+    @media screen and (max-width: $break-small) {
+      margin-left: 0.5rem;
+      margin-right: 1rem;
+    }
+
+    .titleLogo {
+      height: 50px;
+      //width: 5rem;
+
+      &:hover{
+        cursor: pointer;
+        background-color: fade-out($dark-gunmetal, 0.5);
+      }
+    }
+
+    .toolbarMenu{
+      display: inline-flex;
+      margin-left: auto;
+      margin-top: auto;
+      margin-bottom: auto;
+
+      .menuItem{
+        margin-left: 2rem;
+        
+        @media screen and (max-width: $break-small) {
+          margin-left: 1rem;
+        }
+
+        .menuIcon{
+          color: $toolbar-icon-color;
+          :hover {
+            color: $toolbar-icon-hover;
+            cursor: pointer;
+          }
+          
+          :active{
+            color: $toolbar-icon-active;
+          }
+        }
+
+      }
+
+      
+    }
+
+  }
+}

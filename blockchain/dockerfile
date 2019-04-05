@@ -1,0 +1,10 @@
+FROM node:8
+
+# run commands to deploy contract onto blockchain
+WORKDIR /blockchain
+COPY / .
+
+RUN npm install -g truffle --unsafe
+
+RUN truffle compile
+#CMD ["truffle", "migrate",  "--reset"] 

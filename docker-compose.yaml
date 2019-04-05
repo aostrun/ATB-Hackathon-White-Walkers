@@ -1,0 +1,54 @@
+version: "3.5"
+
+services: 
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+      
+  ganache:
+    image: trufflesuite/ganache-cli:latest
+    command: "--networkId 10 -e 100"
+    ports:
+      - "8545:8545"
+    environment:
+      - DOCKER=true
+
+  truffle:
+    build: './blockchain'
+    volumes:
+      - blockchain:/blockchain/build
+    depends_on:
+      - ganache
+    command: bash -c "truffle migrate --reset && touch a.txt && tail -F a.txt"
+
+  backend:
+    build: './backend'
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ganache
+      - truffle
+      - mongo
+    volumes:
+      - blockchain:/blockchain/build
+  
+  frontend:
+    build: './frontend'
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - backend
+
+volumes:
+  blockchain:
+

@@ -1,0 +1,17 @@
+#Setup Node image
+FROM node:8
+
+# Set working directory
+WORKDIR /frontend
+
+# copy package.json into the directory
+COPY package*.json /frontend/
+
+# install dependencies
+RUN npm install
+
+# copy the current directory contents into the container at /frontend
+COPY . /frontend/
+
+# run the app when container launches
+CMD ["npm", "start"]
