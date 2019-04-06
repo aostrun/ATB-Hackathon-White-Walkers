@@ -25,7 +25,7 @@ class GenericCard extends React.Component {
     const { classes } = this.props;
     return (
         this.props.data.map((data,index) => {
-          var color = data.status === 'pending' ? 'danger' : 'primary'
+          var color = data.status === 'pending' ? 'danger' : 'success'
           return(
               <Card className={classes.textCenter} key={index}> 
                 <CardHeader color={color}>{data.header}</CardHeader>
@@ -36,7 +36,7 @@ class GenericCard extends React.Component {
                     </p>
                     <h1>Status: {data.status}</h1>
                     {data.status === 'pending' &&
-                    <Button color={color}>Approve</Button>
+                    <Button color="primary">Approve</Button>
                     }
                   </CardBody>
                   <CardFooter className={classes.textMuted}>
