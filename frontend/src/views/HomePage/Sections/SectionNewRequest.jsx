@@ -1,6 +1,8 @@
 import React from "react";
+import ReactDOM from "react-dom";
 // react plugin for creating date-time-picker
 import Datetime from "react-datetime";
+import Axios from 'axios'
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Slide from "@material-ui/core/Slide";
@@ -13,6 +15,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import People from "@material-ui/icons/People";
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 // @material-ui/icons
 
@@ -21,6 +28,7 @@ import Close from "@material-ui/icons/Close";
 
 import Button from "components/CustomButtons/Button.jsx";
 import javascriptStyles from "assets/jss/material-kit-react/views/componentsSections/javascriptStyles.jsx";
+import { GET_ALL_USERS_URL } from "../../../constants/constants";
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
@@ -33,11 +41,37 @@ class SectionNewRequest extends React.Component {
   anchorElRight = null;
   constructor(props) {
     super(props);
+
+    this.state = {
+      user: '',
+      labelWidth:0
+    }
   }
+
+  componentDidMount() {
+    this.loadUsers();
+    this.setState({
+      labelWidth: 20
+    });
+  }
+
+  loadUsers = () => {
+    Axios.get(GET_ALL_USERS_URL).then(response => {
+      console.log("Users");
+      console.log(response.data);
+      // ! provide this data to DataCard
+    });
+  }
+  
 
   handleCreateRequest = () => {
     console.log("creating request..." + this.state.username + " " +  this.state.contract)
   }
+
+  handleChange = event => {
+    this.setState({ user: event.target.value });
+    console.log("current value", event.target.value )
+  };
 
   render() {
     const { classes } = this.props;
@@ -75,22 +109,34 @@ class SectionNewRequest extends React.Component {
               id="classic-modal-slide-description"
               className={classes.modalBody}
             >
-              <CustomInput
-                labelText="User..."
-                id="username"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                onChange={e => this.setState({ username: e.target.value })}
-                inputProps={{
-                  type: "username",
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <People className={classes.inputIconsColor} />
-                    </InputAdornment>
-                  )
-                }}
-              />
+                 <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel
+                    ref={ref => {
+                      this.InputLabelRef = ref;
+                    }}
+                    htmlFor="outlined-age-simple"
+                  >
+                    User
+                  </InputLabel>
+                  <Select
+                    value={this.state.user}
+                    onChange={this.handleChange}
+                    input={
+                      <OutlinedInput
+                        labelWidth={this.state.labelWidth}
+                        name="user"
+                        id="outlined-age-simple"
+                      />
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
               <CustomInput
                 labelText="Contract string"
                 id="contract"
