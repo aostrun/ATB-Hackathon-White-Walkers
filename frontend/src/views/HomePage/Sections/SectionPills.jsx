@@ -14,14 +14,16 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
 import GenericCard from 'components/Card/GenericCard.jsx'
+import DataCard from 'components/Card/DataCard.jsx'
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
-import { GET_ALL_REQUESTS_URL } from "../../../constants/constants";
+import { GET_ALL_REQUESTS_URL, GET_ALL_DATA_URL } from "../../../constants/constants";
 
 class SectionPills extends React.Component {
 
 
   componentDidMount() {
     this.loadRequests();
+    this.loadData();
   }
 
   loadRequests = () => {
@@ -30,7 +32,14 @@ class SectionPills extends React.Component {
       // ! provide this data to GenericCard
     });
   }
-  
+
+  loadData = () => {
+    Axios.get(GET_ALL_DATA_URL).then(response => {
+      console.log(response.data);
+      // ! provide this data to DataCard
+    });
+  }
+
 
 
   render() {
@@ -97,6 +106,14 @@ class SectionPills extends React.Component {
                             }
                           ]
                           }/>
+                      )
+                    },
+                    {
+                      tabButton: "Your data",
+                      tabIcon: List,
+
+                      tabContent: (
+                        <DataCard data = {["1", "2", "3", "4"]}/>
                       )
                     }
                   ]}
