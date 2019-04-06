@@ -20,7 +20,7 @@ const style = {
   },
 };
 
-class GenericCard extends React.Component {
+class GenericIssueCard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
@@ -32,10 +32,10 @@ class GenericCard extends React.Component {
                   <CardBody>
                     <h4 className={classes.cardTitle}>AllowedId: {data.allowedId}</h4>
                     <p >Contract text: {data.contract}</p>
-                    {!data.issuedTx &&
-                    <Button color="primary" onClick={this.props.callApproveContract(data)}>Approve</Button>
-                    }
                   </CardBody>
+                  {data.issuedTx &&
+                    <Button color="primary" onClick={this.props.callVerifyContract(data)}>Verify</Button>
+                    }
                   <CardFooter className={classes.textMuted}>
                   2 days ago
                   </CardFooter>
@@ -48,4 +48,4 @@ class GenericCard extends React.Component {
   }
 }
 
-export default withStyles(style)(GenericCard);
+export default withStyles(style)(GenericIssueCard);

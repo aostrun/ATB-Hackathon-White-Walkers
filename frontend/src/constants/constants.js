@@ -5,7 +5,8 @@ export const LOGOUT_URL = API_URL + '/Clients/logout'
 export const UPDATE_URL = API_URL + '/api/ClientData/logout'
 
 
-export const GET_ALL_REQUESTS_URL = API_URL + '/api/AccessRequests'
+export const GET_ALL_RECEIVED_REQUESTS_URL = (userId) => API_URL + '/api/Clients/'+userId+'/receivedAccessTokens'
+export const GET_ALL_ISSUED_REQUESTS_URL = (userId) => API_URL + '/api/Clients/'+userId+'/issuedAccessTokens'
 export const GET_ALL_DATA_URL = API_URL + '/api/BlogPosts'
 export const GET_ALL_USERS_URL = API_URL + '/api/Clients'
 export const POST_APPROVAL = (tokenId) => API_URL + '/api/AccessRequests/' + tokenId + '/tokenIssued'

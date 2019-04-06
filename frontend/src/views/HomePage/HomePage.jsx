@@ -85,8 +85,8 @@ class HomePage extends React.Component {
   }
 
   callApproveContract = (data) => () => {
-    console.log("dataaaa", data)
     var option={from: userWalletAddress, gas: 500000};
+    console.log(option);
    
     var myContract = new  window.web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
     var self = this;
@@ -109,6 +109,28 @@ class HomePage extends React.Component {
       });
 
     });
+    
+  }
+
+  callVerifyContract = (data) => () => {
+    console.log("dataaaa", data)
+    var option={from: userWalletAddress, gas: 500000};
+   
+    var myContract = new  window.web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
+    var self = this;
+    const contractHash =  window.web3.utils.keccak256(data.contract);
+    
+    myContract.methods.acceptAccessToken(window.web3.utils.asciiToHex(data.id), contractHash, true).send(option,function(error,result){
+      if (! error){
+        console.log(result);
+        //self.sendApprovalToBackend(result,data.id);
+      }
+      else{
+        console.log(error);
+      }
+          
+  });
+
     
   }
 
@@ -142,7 +164,7 @@ class HomePage extends React.Component {
         />
 
         <div className={classNames(classes.main, classes.mainRaised)}>
-          <SectionPills callApproveContract={this.callApproveContract.bind(this)}/>
+          <SectionPills callApproveContract={this.callApproveContract.bind(this)} callVerifyContract={this.callVerifyContract.bind(this)}/>
           <div className={styles.bottomRightMenu}>
             <Tooltip
               title="Create new request"

@@ -61,7 +61,7 @@ class SectionNewRequest extends React.Component {
     Axios.get(GET_ALL_USERS_URL).then(response => {
       console.log("Users");
       console.log(response.data);
-      const result = response.data.filter(user => user.WalletAddress !== this.props.userWalletAddress)
+      const result = response.data.filter(user => user.WalletAddress.toLowerCase() !== this.props.userWalletAddress.toLowerCase() )
       this.setState({users: result})
       // ! provide this data to DataCard
     });

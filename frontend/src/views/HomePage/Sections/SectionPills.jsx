@@ -14,9 +14,10 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
 import GenericCard from 'components/Card/GenericCard.jsx'
+import GenericIssueCard from 'components/Card/GenericIssueCard.jsx'
 import DataCard from 'components/Card/DataCard.jsx'
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
-import { GET_ALL_REQUESTS_URL, GET_ALL_DATA_URL } from "../../../constants/constants";
+import { GET_ALL_RECEIVED_REQUESTS_URL, GET_ALL_DATA_URL, GET_ALL_ISSUED_REQUESTS_URL } from "../../../constants/constants";
 
 class SectionPills extends React.Component {
   constructor(props) {
@@ -24,25 +25,38 @@ class SectionPills extends React.Component {
   
     this.state = {
        blogPosts: [],
-       accessRequests: []
+       accessRequests: [],
+       issuedRequests: []
     }
   }
   
 
   componentDidMount() {
     this.loadRequests();
+    this.loadIssuedRequests();
     this.loadData();
   }
 
   loadRequests = () => {
-    Axios.get(GET_ALL_REQUESTS_URL).then(response => {
+    Axios.get(GET_ALL_RECEIVED_REQUESTS_URL(localStorage.getItem('USERID'))).then(response => {
       console.log(response.data);
       this.setState({
-        accessRequests: response.data
+        accessRequests: response.data.issuedAccessTokens
       })
       // ! provide this data to GenericCard
     });
   }
+
+  loadIssuedRequests = () => {
+    Axios.get(GET_ALL_ISSUED_REQUESTS_URL(localStorage.getItem('USERID'))).then(response => {
+      console.log(response.data);
+      this.setState({
+        issuedRequests: response.data.issuedAccessTokens
+      })
+      // ! provide this data to GenericCard
+    });
+  }
+
 
   loadData = () => {
     Axios.get(GET_ALL_DATA_URL).then(response => {
@@ -80,7 +94,7 @@ class SectionPills extends React.Component {
                       tabButton: "Received requests",
                       tabIcon: Dashboard,
                       tabContent: (
-                        <GenericCard data={this.state.accessRequests} callApproveContract={this.props.callApproveContract}/>
+                        <GenericCard data={this.state.issuedRequests} callApproveContract={this.props.callApproveContract}/>
                       )
                     },
                     {
@@ -88,7 +102,7 @@ class SectionPills extends React.Component {
                       tabIcon: Schedule,
 
                       tabContent: (
-                        <p>nešto</p>
+                        <GenericIssueCard data={this.state.accessRequests} callVerifyContract={this.props.callVerifyContract}/>
                       )
                     },
                     {

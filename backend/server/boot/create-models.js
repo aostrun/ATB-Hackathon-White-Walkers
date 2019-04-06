@@ -8,8 +8,8 @@ module.exports = async function (app) {
 
   var accounts = [
     "0xC6d90b31f29494E60C6A571CC27269Df103CEdbB",
-    "0x72410D4171805F4a39DFeF2C2179934196d0A1B9",
-    "0x72410D4171805F4a39DFeF2C2179934196d0A1BA",
+    "0xad69e40a1312e547329317058d360b8250065119",
+    "0x0e0fe92376e280281c5c19ccd2bbefc68ba8ccbd",
   ]
 
   async.parallel({
