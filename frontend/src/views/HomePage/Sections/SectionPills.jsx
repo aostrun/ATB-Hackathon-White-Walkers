@@ -19,7 +19,15 @@ import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/p
 import { GET_ALL_REQUESTS_URL, GET_ALL_DATA_URL } from "../../../constants/constants";
 
 class SectionPills extends React.Component {
-
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       blogPosts: [],
+       accessRequests: []
+    }
+  }
+  
 
   componentDidMount() {
     this.loadRequests();
@@ -29,14 +37,20 @@ class SectionPills extends React.Component {
   loadRequests = () => {
     Axios.get(GET_ALL_REQUESTS_URL).then(response => {
       console.log(response.data);
+      this.setState({
+        accessRequests: response.data
+      })
       // ! provide this data to GenericCard
     });
   }
 
   loadData = () => {
     Axios.get(GET_ALL_DATA_URL).then(response => {
-      console.log(response.data);
-      // ! provide this data to DataCard
+      //console.log(response.data);
+      this.setState({
+        blogPosts: response.data
+      })
+      console.log(this.state.blogPosts);
     });
   }
 
@@ -66,29 +80,7 @@ class SectionPills extends React.Component {
                       tabButton: "Received requests",
                       tabIcon: Dashboard,
                       tabContent: (
-                        <GenericCard data={
-                        [
-                          {
-                            header: "Contract No.1",
-                            title: "Title 1",
-                            contract: "I let you using my facebook data",
-                            status: "pending"
-                          },
-                          {
-                            header: "Contract No.2",
-                            title: "Title 2",
-                            contract: "I let you using my twitter data",
-                            status: "pending"
-                          },
-                          { 
-                            header: "Contract No.3",
-                            title: "Title 3",
-                            contract: "I let you using my instagram data",
-                            status: "approved"
-                          }
-
-                        ]
-                        }/>
+                        <GenericCard data={this.state.accessRequests}/>
                       )
                     },
                     {
@@ -96,16 +88,7 @@ class SectionPills extends React.Component {
                       tabIcon: Schedule,
 
                       tabContent: (
-                        <GenericCard data={
-                          [
-                            { 
-                              header: "Contract No.2",
-                              title: "Title 2",
-                              contract: "I let you using my twitter data",
-                              status: "approved"
-                            }
-                          ]
-                          }/>
+                        <p>nešto</p>
                       )
                     },
                     {
@@ -113,7 +96,7 @@ class SectionPills extends React.Component {
                       tabIcon: List,
 
                       tabContent: (
-                        <DataCard data = {["1", "2", "3", "4"]}/>
+                        <DataCard data ={this.state.blogPosts}/>
                       )
                     }
                   ]}

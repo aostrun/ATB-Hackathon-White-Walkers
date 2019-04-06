@@ -44,6 +44,7 @@ class SectionNewRequest extends React.Component {
 
     this.state = {
       user: '',
+      contract: '',
       labelWidth:0
     }
   }
@@ -65,7 +66,7 @@ class SectionNewRequest extends React.Component {
   
 
   handleCreateRequest = () => {
-    console.log("creating request..." + this.state.username + " " +  this.state.contract)
+    console.log("creating request... " +  this.state.contract+" "+this.state.user)
   }
 
   handleChange = event => {

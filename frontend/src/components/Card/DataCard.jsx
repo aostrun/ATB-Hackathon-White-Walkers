@@ -15,7 +15,7 @@ const style = {
   cardTitle,
 };
 
-class Cards extends React.Component {
+class DataCard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
@@ -24,18 +24,17 @@ class Cards extends React.Component {
                 return(
                     <GridItem xs={12} sm={6} md={6} lg={4} key={index}>
                     <Card style={{width: "20rem"}}>
-                        <CardHeader color="warning">Featured</CardHeader>
+                        <CardHeader color="warning">{data.title}</CardHeader>
                         <CardBody>
-                        <h4 className={classes.cardTitle}>Special title treatment</h4>
+                        <h4 className={classes.cardTitle}>Id: {data.id}</h4>
                         <p>
-                            With supporting text below as a
-                            natural lead-in to additional content.
+                           {data.content}
                         </p>
-                        <Button color="primary">Do something</Button>
                         </CardBody>
                     </Card>
                 </GridItem>
                 )
+               
             })
         }
         </GridContainer>
@@ -43,4 +42,4 @@ class Cards extends React.Component {
   }
 }
 
-export default withStyles(style)(Cards);
+export default withStyles(style)(DataCard);

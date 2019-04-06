@@ -5,8 +5,8 @@ export const LOGOUT_URL = API_URL + '/Clients/logout'
 export const UPDATE_URL = API_URL + '/api/ClientData/logout'
 
 
-export const GET_ALL_REQUESTS_URL = API_URL + '/api/Requests'
-export const GET_ALL_DATA_URL = API_URL + '/api/Data'
+export const GET_ALL_REQUESTS_URL = API_URL + '/api/AccessRequests'
+export const GET_ALL_DATA_URL = API_URL + '/api/BlogPosts'
 export const GET_ALL_USERS_URL = API_URL + '/api/Clients'
 export const UPDATE_QUIZ_URL = (quizId) => API_URL + '/api/Quizzes/' + quizId
 export const QUESTION_ID_URL = (questionId) => API_URL + '/api/Questions/' + questionId
