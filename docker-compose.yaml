@@ -6,15 +6,10 @@ services:
     image: mongo
     ports:
       - '27017:27017'
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
       
   ganache:
     image: trufflesuite/ganache-cli:latest
-    command: "--networkId 10 -e 100"
+    command: "--networkId 10 -e 100 --mnemonic \"combine swap jacket ranch dad lyrics job sweet puppy column famous guitar\" "
     ports:
       - "8545:8545"
     environment:

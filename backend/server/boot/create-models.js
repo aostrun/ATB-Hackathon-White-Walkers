@@ -14,16 +14,20 @@ module.exports = async function (app) {
 
   async.parallel({
     clientData: async.apply(createClientData)
-  }, function(err, res) {
+  }, async function(err, res) {
     if(err) throw err;
-    createBlogPosts(res.clientData, function(err, res){
+    await createBlogPosts(res.clientData, function(err, res){
       if(err) throw err;
-      console.log("> models created successfully");
     })
+    await createAccessRequests(res.clientData, function(err, res){
+      if(err) throw err;
+    })
+
+    console.log("> models created successfully");
   })
 
   async function createClientData(cb){
-    
+    console.log("\t-creating users...");
     await mongoDs.automigrate('Client', function (err) {
       if (err) return cb(err);
       var Client = app.models.Client;
@@ -59,7 +63,7 @@ module.exports = async function (app) {
   }
 
   async function createBlogPosts(clientData, cb){
-    console.log(clientData);
+    console.log("\t-creating blog posts...");
     await mongoDs.automigrate('BlogPost', function(err) {
       if(err) return cb(err);
 
@@ -81,6 +85,23 @@ module.exports = async function (app) {
           title: "A Lannister always pays his debts.",
           content: "Sample content",
           clientId: clientData[2].id
+        }
+      ])
+    })
+  }
+
+  async function createAccessRequests(clientData, cb){
+    console.log("\t-creating access requests...");
+    await mongoDs.automigrate('AccessRequest', function(err) {
+      if(err) return cb(err);
+
+      var AccessRequest = app.models.AccessRequest;
+
+      AccessRequest.create([
+        {
+          contract: "User request access to your data and in return he offers to give you discount on his services",
+          issuer: clientData[0],
+          allowed: clientData[1]
         }
       ])
     })
