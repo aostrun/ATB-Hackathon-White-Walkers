@@ -22,7 +22,8 @@ const getContractInstance = () => {
   */
   const web3 = getWeb3();
 
-  const deployedAddress = contract_artifacts.networks[Object.keys(contract_artifacts.networks)[0]].address
+  //const deployedAddress = contract_artifacts.networks[Object.keys(contract_artifacts.networks)[0]].address
+  const deployedAddress = "0x00000000";
   console.log("Deployed address: " + deployedAddress)
   const instance = new web3.eth.Contract(contract_artifacts.abi, deployedAddress);
   return instance

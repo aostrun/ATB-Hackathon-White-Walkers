@@ -38,5 +38,13 @@
   "Client": {
     "dataSource": "db",
     "public": true
+  },
+  "AccessRequest": {
+    "dataSource": "db",
+    "public": true
+  },
+  "BlogPost": {
+    "dataSource": "db",
+    "public": true
   }
 }
