@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Particles from 'react-particles-js'
 import particles_config from './particles-config'
+import PropTypes from 'prop-types'
 import ReduxToastr from 'react-redux-toastr'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -14,6 +15,9 @@ import LandingPage from "views/LandingPage/LandingPage.jsx";
 import ProfilePage from "views/ProfilePage/ProfilePage.jsx";
 import HomePage from "views/HomePage/HomePage.jsx";
 
+
+
+
 import styles from './index.module.scss'
 import Toolbar from './Toolbar';
 
@@ -21,16 +25,25 @@ library.add([
   faCog,
 ])
 
+
+
 class RootComponent extends React.Component {
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
+
   render() {
     return (
       <React.Fragment>
-        <BrowserRouter>
+        <BrowserRouter >
             <Switch>
+               <Route exact path='/' component={LandingPage} /> 
                <Route exact path='/login-page' component={LoginPage} /> 
                <Route exact path='/profile-page' component={ProfilePage} /> 
                <Route exact path='/home-page' component={HomePage} /> 
-               <Route exact path='/' component={LandingPage} /> 
+               
             </Switch>
         </BrowserRouter>
 
@@ -53,7 +66,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
     store.getState().user.isLoginSuccess === true
       ? <Component {...props} />
       : <Redirect to={{
-        pathname: '/login',
+        pathname: '/login-page',
         state: { from: props.location }
       }} />
   )} />

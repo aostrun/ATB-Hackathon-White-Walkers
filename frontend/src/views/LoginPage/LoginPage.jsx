@@ -37,7 +37,7 @@ class LoginPage extends React.Component {
   }
 
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   }
 
   componentDidMount() {
