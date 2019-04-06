@@ -2,7 +2,7 @@ version: "3.5"
 
 services: 
   mongo:
-    container_name: mongo
+    container_name: mongoATB
     image: mongo
     ports:
       - '27017:27017'

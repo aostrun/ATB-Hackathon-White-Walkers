@@ -13,7 +13,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "posts": {
+      "type": "hasMany",
+      "model": "BlogPost",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
