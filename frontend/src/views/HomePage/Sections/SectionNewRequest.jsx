@@ -45,7 +45,8 @@ class SectionNewRequest extends React.Component {
     this.state = {
       user: '',
       contract: '',
-      labelWidth:0
+      labelWidth:0,
+      users: []
     }
   }
 
@@ -60,6 +61,8 @@ class SectionNewRequest extends React.Component {
     Axios.get(GET_ALL_USERS_URL).then(response => {
       console.log("Users");
       console.log(response.data);
+      const result = response.data.filter(user => user.WalletAddress !== this.props.userWalletAddress)
+      this.setState({users: result})
       // ! provide this data to DataCard
     });
   }
@@ -89,6 +92,7 @@ class SectionNewRequest extends React.Component {
             onClose={this.props.handleClose}
             aria-labelledby="classic-modal-slide-title"
             aria-describedby="classic-modal-slide-description"
+            
           >
             <DialogTitle
               id="classic-modal-slide-title"
@@ -130,12 +134,11 @@ class SectionNewRequest extends React.Component {
                       />
                     }
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                  {this.state.users.map((user,index) => {
+                      return (
+                        <MenuItem key={index} value={user.id}>{user.username}, wallet address: {user.WalletAddress}</MenuItem>
+                      )
+                  })}
                   </Select>
                 </FormControl>
               <CustomInput

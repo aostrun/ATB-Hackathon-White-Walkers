@@ -80,7 +80,7 @@ class SectionPills extends React.Component {
                       tabButton: "Received requests",
                       tabIcon: Dashboard,
                       tabContent: (
-                        <GenericCard data={this.state.accessRequests}/>
+                        <GenericCard data={this.state.accessRequests} callApproveContract={this.props.callApproveContract}/>
                       )
                     },
                     {

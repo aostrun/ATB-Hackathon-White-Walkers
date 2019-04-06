@@ -8,6 +8,7 @@ export const UPDATE_URL = API_URL + '/api/ClientData/logout'
 export const GET_ALL_REQUESTS_URL = API_URL + '/api/AccessRequests'
 export const GET_ALL_DATA_URL = API_URL + '/api/BlogPosts'
 export const GET_ALL_USERS_URL = API_URL + '/api/Clients'
+export const GET_USER_INFO = (userId) => API_URL + '/api/Clients/' + userId
 export const UPDATE_QUIZ_URL = (quizId) => API_URL + '/api/Quizzes/' + quizId
 export const QUESTION_ID_URL = (questionId) => API_URL + '/api/Questions/' + questionId
 export const USER_RESULTS_URL = (playerId) => API_URL + '/api/QuizSessions?playerId=' + playerId

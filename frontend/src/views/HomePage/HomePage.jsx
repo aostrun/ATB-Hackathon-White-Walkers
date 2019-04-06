@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // nodejs library that concatenates classes
 import classNames from "classnames";
 import Web3 from 'web3';
+import Axios from 'axios'
 // react components for routing our app without refresh
 import { Link } from "react-router-dom";
 
@@ -21,7 +22,7 @@ import homeStyle from "assets/jss/material-kit-react/views/home.jsx";
 import SectionPills from "./Sections/SectionPills";
 import styles from "./index.module.scss";
 import SectionNewRequest from "./Sections/SectionNewRequest";
-import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../../constants/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI, GET_USER_INFO } from "../../constants/constants";
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
@@ -83,19 +84,28 @@ class HomePage extends React.Component {
     }
   }
 
-  callApproveContract(){
+  callApproveContract(data){
     var option={from: userWalletAddress};
-        /*
-    var myContract = new web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
+    console.log(option, data);
+    //var myContract = new web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
 
-    myContract.methods.ApproveRequest('nest', 'nesto')
+    Axios.get(GET_USER_INFO(data.allowedId)).then(response => {
+      console.log("User info:");
+      console.log(response.data);
+      var allowedUserWalletAddress = response.data.WalletAddress
+      /**
+       *  myContract.methods.issueToken('nest', 'nesto')
     .send(option,function(error,result){
         if (! error)
             console.log(result);
         else
             console.log(error);
     });
-    */
+       * 
+       */
+      // ! provide this data to DataCard
+    });
+    
   }
   
 
@@ -119,7 +129,7 @@ class HomePage extends React.Component {
         />
 
         <div className={classNames(classes.main, classes.mainRaised)}>
-          <SectionPills />
+          <SectionPills callApproveContract={this.callApproveContract.bind(this)}/>
           <div className={styles.bottomRightMenu}>
             <Tooltip
               title="Create new request"
@@ -133,7 +143,7 @@ class HomePage extends React.Component {
           </div>
         </div>
 
-        <SectionNewRequest classicModal={this.state.classicModal} handleClose={this.handleCloseCreateRequestModal} handleCreateRequest={this.handleCreateRequest}/>
+        <SectionNewRequest userWalletAddress={userWalletAddress} classicModal={this.state.classicModal} handleClose={this.handleCloseCreateRequestModal} handleCreateRequest={this.handleCreateRequest}/>
         
       </div>
     );

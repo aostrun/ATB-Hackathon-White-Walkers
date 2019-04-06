@@ -33,7 +33,7 @@ class GenericCard extends React.Component {
                     <h4 className={classes.cardTitle}>AllowedId: {data.allowedId}</h4>
                     <p >Contract text: {data.contract}</p>
                     {!data.issueTx &&
-                    <Button color="primary">Approve</Button>
+                    <Button color="primary" onClick={this.props.callApproveContract(data)}>Approve</Button>
                     }
                   </CardBody>
                   <CardFooter className={classes.textMuted}>
