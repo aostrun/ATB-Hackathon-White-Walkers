@@ -10,6 +10,10 @@
     "contract": {
       "type": "string",
       "required": true
+    },
+    "issueTx": {
+      "type": "string",
+      "required": false
     }
   },
   "validations": [],

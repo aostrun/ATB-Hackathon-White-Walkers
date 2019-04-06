@@ -7,11 +7,12 @@ WORKDIR /backend
 
 # install dependencies
 COPY / .
-#COPY backend_start.sh .
-#RUN chmod +x backend_start.sh
+COPY backend_start.sh .
+RUN chmod +x backend_start.sh
 RUN git config --global url."https://".insteadOf git://
 RUN npm install
 
 # run the app when the container starts
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD ["./backend_start.sh"]
 #CMD ["sh","-c","../blockchain truffle migrate --reset && npm start"]

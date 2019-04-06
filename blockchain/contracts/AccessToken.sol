@@ -4,13 +4,15 @@ pragma experimental ABIEncoderV2;
 contract AccessToken {
   
   struct AccessToken {
-    //uint256 id;
+    uint256 id;
     address issuer;
     address allowed;
 
     bytes32 contractHash;
     uint issuedAt;
     uint expiresAt;
+
+    bool allowedConfirmation;
   }
 
   mapping(uint256 => AccessToken) accessTokens;
@@ -25,16 +27,32 @@ contract AccessToken {
     * @return true if the token is generated successfully
    */
   function issueToken
-    (address _allowed, uint _expiration, bytes32 _contractHash)
+    (uint256 _id, address _allowed, uint _expiration, bytes32 _contractHash)
     public
     returns (bool)
     {
-      AccessToken memory _token = AccessToken(tx.origin, _allowed, _contractHash, block.number, block.number + _expiration);
+      AccessToken memory _token = AccessToken(_id, tx.origin, _allowed, _contractHash, block.number, block.number + _expiration, false);
+      accessTokens[_id] = _token;
       issuersTokens[tx.origin].push(_token);
       allowedTokens[_allowed].push(_token);
 
 
       return true;
+    }
+
+
+  function acceptAccessToken(
+    uint256 _id, bytes32 _contractHash, bool _vote)
+    public
+    returns (bool)
+    {
+      AccessToken memory _token = accessTokens[_id];
+      require(_token.allowed == tx.origin);
+      require(_token.contractHash == _contractHash);
+
+      _token.allowedConfirmation = _vote;
+
+      return _vote;
     }
 
   /**
@@ -49,9 +67,10 @@ contract AccessToken {
   {
 
     AccessToken memory _token = getIssuedToken(_issuer);
-    return true;
+    return _token.allowedConfirmation;
     
   }
+
 
   function getAllIssuedTokens()
     public
