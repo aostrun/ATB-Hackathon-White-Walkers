@@ -22,7 +22,7 @@ function CustomInput({ ...props }) {
     error,
     white,
     inputRootCustomClasses,
-    success
+    success,
   } = props;
 
   const labelClasses = classNames({
@@ -51,7 +51,9 @@ function CustomInput({ ...props }) {
   } else {
     formControlClasses = classes.formControl;
   }
+  
   return (
+    
     <FormControl {...formControlProps} className={formControlClasses}>
       {labelText !== undefined ? (
         <InputLabel
@@ -70,7 +72,8 @@ function CustomInput({ ...props }) {
           underline: underlineClasses
         }}
         id={id}
-        {...inputProps}
+        onChange={props.onChange}
+        {...inputProps} 
       />
     </FormControl>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import Axios from "axios";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -12,10 +13,26 @@ import List from "@material-ui/icons/List";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import NavPills from "components/NavPills/NavPills.jsx";
-import Cards from 'components/Card/Cards.jsx'
+import GenericCard from 'components/Card/GenericCard.jsx'
 import pillsStyle from "assets/jss/material-kit-react/views/componentsSections/pillsStyle.jsx";
+import { GET_ALL_REQUESTS_URL } from "../../../constants/constants";
 
 class SectionPills extends React.Component {
+
+
+  componentDidMount() {
+    this.loadRequests();
+  }
+
+  loadRequests = () => {
+    Axios.get(GET_ALL_REQUESTS_URL).then(response => {
+      console.log(response.data);
+      // ! provide this data to GenericCard
+    });
+  }
+  
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -37,21 +54,51 @@ class SectionPills extends React.Component {
                   alignCenter
                   tabs={[
                     {
-                      tabButton: "Requests",
+                      tabButton: "Received requests",
                       tabIcon: Dashboard,
                       tabContent: (
-                        <Cards />
+                        <GenericCard data={
+                        [
+                          {
+                            header: "Contract No.1",
+                            title: "Title 1",
+                            contract: "I let you using my facebook data",
+                            status: "pending"
+                          },
+                          {
+                            header: "Contract No.2",
+                            title: "Title 2",
+                            contract: "I let you using my twitter data",
+                            status: "pending"
+                          },
+                          { 
+                            header: "Contract No.3",
+                            title: "Title 3",
+                            contract: "I let you using my instagram data",
+                            status: "approved"
+                          }
+
+                        ]
+                        }/>
                       )
                     },
                     {
-                      tabButton: "Approved",
+                      tabButton: "Sent requests",
                       tabIcon: Schedule,
 
                       tabContent: (
-                        <Cards />
+                        <GenericCard data={
+                          [
+                            { 
+                              header: "Contract No.2",
+                              title: "Title 2",
+                              contract: "I let you using my twitter data",
+                              status: "approved"
+                            }
+                          ]
+                          }/>
                       )
                     }
-                
                   ]}
                 />
               </GridItem>
@@ -63,5 +110,7 @@ class SectionPills extends React.Component {
     );
   }
 }
+
+
 
 export default withStyles(pillsStyle)(SectionPills);
