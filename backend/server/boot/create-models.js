@@ -16,7 +16,10 @@ module.exports = async function (app) {
     clientData: async.apply(createClientData)
   }, function(err, res) {
     if(err) throw err;
-    console.log("> models created successfully");
+    createBlogPosts(res.clientData, function(err, res){
+      if(err) throw err;
+      console.log("> models created successfully");
+    })
   })
 
   async function createClientData(cb){
@@ -24,7 +27,8 @@ module.exports = async function (app) {
     await mongoDs.automigrate('Client', function (err) {
       if (err) return cb(err);
       var Client = app.models.Client;
-      Client.create([{
+      Client.create([
+      {
         username: 'test1',
         email: 'test1@test.com',
         emailVerified: true,
@@ -52,5 +56,33 @@ module.exports = async function (app) {
     });
 
 
+  }
+
+  async function createBlogPosts(clientData, cb){
+    console.log(clientData);
+    await mongoDs.automigrate('BlogPost', function(err) {
+      if(err) return cb(err);
+
+      var BlogPost = app.models.BlogPost;
+
+      BlogPost.create([
+        {
+          title: "Winter is coming",
+          content: "Sample content",
+          clientId: clientData[0].id
+          
+        },
+        {
+          title: "You know nothing, Jon Snow.",
+          content: "Sample content",
+          clientId: clientData[1].id
+        },
+        {
+          title: "A Lannister always pays his debts.",
+          content: "Sample content",
+          clientId: clientData[2].id
+        }
+      ])
+    })
   }
 }
