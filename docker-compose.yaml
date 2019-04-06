@@ -43,7 +43,8 @@ services:
     depends_on:
       - backend
     volumes:
-    - blockchain:/blockchain/build
+    - blockchain:/frontend/src/blockchain/build
+    - ./frontend/src:/frontend/src
 
 volumes:
   blockchain:

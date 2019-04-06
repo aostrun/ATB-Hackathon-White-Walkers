@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 contract AccessToken {
   
   struct AccessToken {
-    uint256 id;
+    bytes32 id;
     address issuer;
     address allowed;
 
@@ -15,7 +15,7 @@ contract AccessToken {
     bool allowedConfirmation;
   }
 
-  mapping(uint256 => AccessToken) accessTokens;
+  mapping(bytes32 => AccessToken) accessTokens;
   mapping(address => AccessToken[]) issuersTokens;
   mapping(address => AccessToken[]) allowedTokens;
   
@@ -27,7 +27,7 @@ contract AccessToken {
     * @return true if the token is generated successfully
    */
   function issueToken
-    (uint256 _id, address _allowed, uint _expiration, bytes32 _contractHash)
+    (bytes32 _id, address _allowed, uint _expiration, bytes32 _contractHash)
     public
     returns (bool)
     {
@@ -42,7 +42,7 @@ contract AccessToken {
 
 
   function acceptAccessToken(
-    uint256 _id, bytes32 _contractHash, bool _vote)
+    bytes32 _id, bytes32 _contractHash, bool _vote)
     public
     returns (bool)
     {

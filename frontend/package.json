@@ -28,7 +28,7 @@
     "react-swipeable-views": "0.13.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "web3": "github:ethereum/web3.js"
+    "web3": "^1.0.0-beta.52"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",

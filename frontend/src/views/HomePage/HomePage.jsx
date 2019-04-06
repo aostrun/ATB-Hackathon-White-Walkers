@@ -22,7 +22,7 @@ import homeStyle from "assets/jss/material-kit-react/views/home.jsx";
 import SectionPills from "./Sections/SectionPills";
 import styles from "./index.module.scss";
 import SectionNewRequest from "./Sections/SectionNewRequest";
-import { CONTRACT_ADDRESS, CONTRACT_ABI, GET_USER_INFO } from "../../constants/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ABI, GET_USER_INFO, POST_APPROVAL } from "../../constants/constants";
 
 function Transition(props) {
   return <Slide direction="down" {...props} />;
@@ -84,28 +84,41 @@ class HomePage extends React.Component {
     }
   }
 
-  callApproveContract(data){
-    var option={from: userWalletAddress};
-    console.log(option, data);
-    //var myContract = new web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
+  callApproveContract = (data) => () => {
+    console.log("dataaaa", data)
+    var option={from: userWalletAddress, gas: 500000};
+   
+    var myContract = new  window.web3.eth.Contract(CONTRACT_ABI,CONTRACT_ADDRESS);
+    var self = this;
 
     Axios.get(GET_USER_INFO(data.allowedId)).then(response => {
       console.log("User info:");
       console.log(response.data);
-      var allowedUserWalletAddress = response.data.WalletAddress
-      /**
-       *  myContract.methods.issueToken('nest', 'nesto')
-    .send(option,function(error,result){
-        if (! error)
+      const allowedUserWalletAddress = response.data.WalletAddress
+      const contractHash =  window.web3.utils.keccak256(data.contract);
+
+      myContract.methods.issueToken( window.web3.utils.asciiToHex(data.id), allowedUserWalletAddress, 1000, contractHash).send(option,function(error,result){
+          if (! error){
             console.log(result);
-        else
+            self.sendApprovalToBackend(result,data.id);
+          }
+          else{
             console.log(error);
-    });
-       * 
-       */
-      // ! provide this data to DataCard
+          }
+              
+      });
+
     });
     
+  }
+
+  sendApprovalToBackend(issuedTx,tokenId){
+    Axios.post(POST_APPROVAL(tokenId),{
+      issuedTx
+    }).then(response => {
+      console.log("sent to backend");
+      
+    });
   }
   
 
