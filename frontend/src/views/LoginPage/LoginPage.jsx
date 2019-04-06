@@ -1,5 +1,8 @@
 import React from "react";
+import { connect } from 'react-redux'
+import { login } from '../../actions/login_actions'
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types'
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -32,8 +35,14 @@ class LoginPage extends React.Component {
       cardAnimaton: "cardHidden"
     };
   }
+
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
+    this.redirectToMainIfLoggedIn();
     setTimeout(
       function() {
         this.setState({ cardAnimaton: "" });
@@ -41,7 +50,48 @@ class LoginPage extends React.Component {
       700
     );
   }
+
+
+  handleSubmit(event) {
+    event.preventDefault()
+    
+    let { username, password } = this.state;
+    console.log(username, password)
+    this.props.login(username, password);
+  }
+
+  redirectToMain() {
+    this.context.router.history.push('/home-page')
+  }
+
+  redirectToMainIfLoggedIn(){
+    if (this.props.isLoginSuccess) {
+      this.redirectToMain();
+    }
+  }
+
+  componentDidUpdate(){
+    this.redirectToMainIfLoggedIn();
+  }
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+
+
   render() {
+
+    if(this.props.isLoginPending){
+      return(
+        <div >
+            <h1>Login...</h1>
+        </div>
+      )
+    }
+
+
+
     const { classes, ...rest } = this.props;
     return (
       <div>
@@ -105,6 +155,7 @@ class LoginPage extends React.Component {
                         formControlProps={{
                           fullWidth: true
                         }}
+                        onChange={e => this.setState({ username: e.target.value })}
                         inputProps={{
                           type: "username",
                           endAdornment: (
@@ -120,6 +171,7 @@ class LoginPage extends React.Component {
                         formControlProps={{
                           fullWidth: true
                         }}
+                        onChange={e => this.setState({ password: e.target.value })}
                         inputProps={{
                           type: "password",
                           endAdornment: (
@@ -136,7 +188,7 @@ class LoginPage extends React.Component {
                       <Button 
                       simple color="primary" 
                       size="lg"
-                      component={ Link } to="/home-page"
+                      onClick={this.handleSubmit.bind(this)}
                       >
                         Get started
                       </Button>
@@ -153,4 +205,17 @@ class LoginPage extends React.Component {
   }
 }
 
-export default withStyles(loginPageStyle)(LoginPage);
+const mapStateToProps = (state) => {
+  return {
+    isLoginPending: state.user.isLoginPending,
+    isLoginSuccess: state.user.isLoginSuccess,
+    loginError: state.user.loginError
+  };
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password) => dispatch(login(email, password))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(loginPageStyle)(LoginPage));
