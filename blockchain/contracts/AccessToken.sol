@@ -61,12 +61,12 @@ contract AccessToken {
     * @return true if sender has rights to access _issuers data
    */
   function checkAllowance
-    (address _issuer)
+    (address _issuer, address _allowed)
     public
     returns (bool)
   {
 
-    AccessToken memory _token = getIssuedToken(_issuer);
+    AccessToken memory _token = getIssuedToken(_issuer, _allowed);
     return _token.allowedConfirmation;
     
   }
@@ -86,11 +86,11 @@ contract AccessToken {
     * @return AccessToken if there is a valid token issued, otherwise it reverts
    */
   function getIssuedToken
-    (address _issuer)
+    (address _issuer, address _allowed)
     internal
     returns (AccessToken storage)
     {
-      uint allowedTokensLength = allowedTokens[tx.origin].length;
+      uint allowedTokensLength = allowedTokens[_allowed].length;
 
       require(allowedTokensLength > 0, "No issued tokens!");
 
@@ -99,7 +99,7 @@ contract AccessToken {
        *  find the token issued by the _issuer.
        */
       for(uint i=0; i < allowedTokensLength; i++){
-        AccessToken storage _token = allowedTokens[tx.origin][i];
+        AccessToken storage _token = allowedTokens[_allowed][i];
         if(_token.issuer == _issuer && _token.expiresAt <= block.number){
           return _token;
         }

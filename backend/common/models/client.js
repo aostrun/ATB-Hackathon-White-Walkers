@@ -57,15 +57,17 @@ module.exports = async function (Client) {
 
     console.log("req id: " + req.accessToken.userId);
     console.log("sent id: " + id);
-    if(req.accessToken.userId === id){
+    if(req.accessToken.userId == id){
       console.log("Owner requesting blogpost!");
       return blogPosts;
     }
 
     var issuer = client.WalletAddress;
 
-    var isAvailable = await AccessTokenContract.methods.checkAllowance(issuer).call({from: account, gas: 500000});
+    var caller = await Client.findById(req.accessToken.userId);
 
+    var isAvailable = await AccessTokenContract.methods.checkAllowance(issuer, caller.WalletAddress).call({from: account, gas: 500000});
+    console.log("isAvailable: " + isAvailable);
     if(isAvailable){
       return blogPosts;
     }

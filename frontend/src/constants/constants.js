@@ -14,5 +14,9 @@ export const QUESTION_ID_URL = (questionId) => API_URL + '/api/Questions/' + que
 export const USER_RESULTS_URL = (playerId) => API_URL + '/api/QuizSessions?playerId=' + playerId
 export const ADMIN_RESULTS_URL = (adminId) => API_URL + '/api/QuizSessions?creatorId=' + adminId
 
-export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS | '';
-export const CONTRACT_ABI = process.env.CONTRACT_ABI | '';
+// Load your contract here!
+var contract_artifacts = require('../../../blockchain/build/contracts/AccessToken.json');
+const deployedAddress = contract_artifacts.networks[Object.keys(contract_artifacts.networks)[0]].address;
+
+export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS | deployedAddress;
+export const CONTRACT_ABI = process.env.CONTRACT_ABI | contract_artifacts.abi;
