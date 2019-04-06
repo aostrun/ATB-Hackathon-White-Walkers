@@ -21,8 +21,9 @@ module.exports = async function (Client) {
 
   Client.issuedAccessTokens = async function (id) {
     var client = await Client.findById(id);
+    const AccessRequest = Client.app.models.AccessRequest;
 
-    var issuedAccessTokens = await AccessToken.find({where: { issuer: id}});
+    var issuedAccessTokens = await AccessRequest.find({where: { issuer: id}});
 
     return issuedAccessTokens;
   }
@@ -35,7 +36,8 @@ module.exports = async function (Client) {
 
   Client.receivedAccessTokens = async function (id) {
 
-    var receivedRequests = await AccessToken.find({where: {allowed: id}});
+    const AccessRequest = Client.app.models.AccessRequest;
+    var receivedRequests = await AccessRequest.find({where: {allowed: id}});
 
     return receivedRequests;
   }

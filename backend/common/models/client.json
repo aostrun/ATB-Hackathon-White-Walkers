@@ -44,7 +44,33 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getBlogPosts"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "__get__issuedAccessTokens"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "issuedAccessTokens"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "__get__receivedAccessTokens"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "receivedAccessTokens"
     }
+
+    
   ],
   "methods": {}
 }
