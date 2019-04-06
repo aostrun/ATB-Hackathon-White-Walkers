@@ -1,14 +1,23 @@
 'use strict';
 
 var helpersContract = require("../../helpers.js");
+var LoopBackContext = require('loopback-context');
 
-const ContractName = helpersContract.getContractInstance();
+const AccessTokenContract = helpersContract.getContractInstance();
+const web3 = helpersContract.getWeb3();
+
+var account = "";
 
 
-module.exports = function (Client) {
+module.exports = async function (Client) {
   Client.validatesLengthOf('WalletAddress', { min: 40, message: { min: 'WalletAddress is too short' } });
   Client.validatesLengthOf('WalletAddress', { max: 42, message: { max: 'WalletAddress is too long' } });
 
+
+  await web3.eth.getAccounts((err, accounts) => {
+    console.log(accounts);
+    account = accounts[0];
+  })
 
   Client.issuedAccessTokens = async function (id) {
     var client = await Client.findById(id);
@@ -37,4 +46,44 @@ module.exports = function (Client) {
     returns: {arg: 'issuedAccessTokens', type: 'any'}
   })
 
+
+  Client.getBlogPosts = async function (id, req) {
+
+    const BlogPost = Client.app.models.BlogPost;
+
+    var client = await Client.findById(id);
+
+    var blogPosts = await BlogPost.find({where: {clientId: id}});
+
+    console.log("req id: " + req.accessToken.userId);
+    console.log("sent id: " + id);
+    if(req.accessToken.userId === id){
+      console.log("Owner requesting blogpost!");
+      return blogPosts;
+    }
+
+    var issuer = client.WalletAddress;
+
+    var isAvailable = await AccessTokenContract.methods.checkAllowance(issuer).call({from: account, gas: 500000});
+
+    if(isAvailable){
+      return blogPosts;
+    }
+
+    var error = new Error();
+    error.status = 401;
+    error.message = 'Insufficient access rights!';
+    error.code = 'NOT_AUTHORIZED';
+
+    return error;
+  }
+
+  Client.remoteMethod('getBlogPosts', {
+    accepts: [
+      {arg: 'id', type: 'any', description: 'ClientId', required: true},
+      { arg: 'req', type: 'object', 'http': {source: 'req'}}
+    ],
+    http: {path: '/:id/getBlogPosts', verb: 'get'},
+    returns: {arg: 'blogPosts', type: 'any'}
+  })
 };
